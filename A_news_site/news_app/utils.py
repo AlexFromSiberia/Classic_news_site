@@ -9,3 +9,4 @@ class MyMixin(object):
             return s.upper()
         else:
             return s.title.upper()
+

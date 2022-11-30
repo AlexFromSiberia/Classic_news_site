@@ -24,7 +24,7 @@ def register(request):
             messages.error(request, 'Ошибка регистрации')
     else:
         form = UserRegisterForm()
-    return render(request, 'news/register.html', {"form": form})
+    return render(request, 'news_app/register.html', {"form": form})
 
 
 def user_login(request):
@@ -36,7 +36,7 @@ def user_login(request):
             return redirect('home')
     else:
         form = UserLoginForm()
-    return render(request, 'news/login.html', {"form": form})
+    return render(request, 'news_app/login.html', {"form": form})
 
 
 def user_logout(request):
@@ -58,12 +58,12 @@ def contact(request):
             messages.error(request, 'Ошибка валидации')
     else:
         form = ContactForm()
-    return render(request, 'news/test.html', {"form": form})
+    return render(request, 'news_app/test.html', {"form": form})
 
 
 class HomeNews(MyMixin, ListView):
     model = News
-    template_name = 'news/home_news_list.html'
+    template_name = 'news_app/home_news_list.html'
     context_object_name = 'news'
     mixin_prop = 'hello world'
     paginate_by = 2
@@ -80,7 +80,7 @@ class HomeNews(MyMixin, ListView):
 
 class NewsByCategory(MyMixin, ListView):
     model = News
-    template_name = 'news/home_news_list.html'
+    template_name = 'news_app/home_news_list.html'
     context_object_name = 'news'
     allow_empty = False
     paginate_by = 2
@@ -101,5 +101,5 @@ class ViewNews(DetailView):
 
 class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
-    template_name = 'news/add_news.html'
+    template_name = 'news_app/add_news.html'
     raise_exception = True
