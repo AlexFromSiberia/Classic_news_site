@@ -3,13 +3,16 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-
 from .models import News, Category
 from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm
 from .utils import MyMixin
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.core.mail import send_mail
+# keep all your secrets in env variables
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
 
 def register(request):
@@ -48,7 +51,15 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], 'yii2_loc@ukr.net', ['matroskin978@gmail.com'], fail_silently=True)
+            # put YOUR e_mai addresses here:
+            sender_address = os.getenv('sender_address')
+            receiver_address = os.getenv('receiver_address')
+
+            mail = send_mail(form.cleaned_data['subject'],
+                             form.cleaned_data['content'],
+                             sender_address,
+                             [receiver_address],
+                             fail_silently=False)
             if mail:
                 messages.success(request, 'Письмо отправлено!')
                 return redirect('contact')
